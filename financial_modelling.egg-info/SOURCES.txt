@@ -1,0 +1,11 @@
+README.rst
+setup.py
+financial_modelling/__init__.py
+financial_modelling.egg-info/PKG-INFO
+financial_modelling.egg-info/SOURCES.txt
+financial_modelling.egg-info/dependency_links.txt
+financial_modelling.egg-info/requires.txt
+financial_modelling.egg-info/top_level.txt
+financial_modelling/data/credentials.toml
+financial_modelling/src/data/FinancialDataRetriever/FinancialDataRetriever.py
+financial_modelling/src/data/FinancialDataRetriever/__init__.py
