@@ -1,9 +1,6 @@
-from financial_modelling import __version__
-import json
 import logging
 import pytest
 import sys
-
 
 sys.path.append("financial_modelling/src/data/")
 
@@ -21,9 +18,8 @@ def output_directory():
 
 
 class TestFinancialModellingPrep:
-
     @pytest.mark.parametrize(
-        "query_string", [("NASDAQ", 1, ""), ("NYSE", 1, ""),],
+        "query_string", [("NASDAQ", 1, ""), ("NYSE", 1, "")],
     )
     def test_get_tickers(self, query_string, output_directory):
         fmp = FinancialDataRetriever.FinancialModellingPrep()
@@ -46,3 +42,21 @@ class TestFinancialModellingPrep:
         )
         assert req.status_code == 200
         assert req.json()["symbol"] == stock_symbol
+
+    def test_get_symbols(self, output_directory):
+        fmp = FinancialDataRetriever.FinancialModellingPrep()
+        req = fmp.get_symbols(output_directory=output_directory)
+        assert req.status_code == 200
+        assert "symbolsList" in req.json().keys()
+
+    @pytest.mark.parametrize(
+        "stock_symbol", ["AAPL", "AMZN", "MSFT", "NFLX", "GOOGL"]
+    )
+    def test_get_stock_historical_price(self, stock_symbol, output_directory):
+        fmp = FinancialDataRetriever.FinancialModellingPrep()
+        req = fmp.get_stock_historical_price(
+            stock_symbol, output_directory=output_directory
+        )
+        assert req.status_code == 200
+        assert req.json()["symbol"] == stock_symbol
+        assert "historical" in req.json().keys()

@@ -12,6 +12,7 @@ jupyterlab = "^1.2.6"
 toml = "^0.10.0"
 requests = "^2.22.0"
 plotly = "^4.5.0"
+psycopg2 = "^2.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

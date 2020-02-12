@@ -1,10 +1,15 @@
 # Financial Modelling
 
-To retrieve API data from IEX Cloud API and analyse the data.
+To retrieve API data from various financial sources and analyse the data.
 
 ## To do
 
 - Get financial data for additional stocks
 - Analyse stock returns across all time
-- Limit stock returns from MBP16 launch and SFB3 launch
+- Get news data for major tech companies
+  - Do NLP to analyse sentiment of news
+  - See if sentiment of news can be used to predict financial returns
 - Do a change point analysis
+- Do a time series forecasting
+- Model volatiltiy of each stock, and cluster risk groups
+- Visualize stock returns using a Django app
