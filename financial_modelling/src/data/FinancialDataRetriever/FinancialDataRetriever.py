@@ -1,77 +1,68 @@
 import datetime as dt
 import json
+import logging
 import pathlib
-import requests
-import toml
 
 
 class FinancialDataRetriever:
     """
-    The FinancialDataRetriever object is used to call data from the IEX Cloud
-    API to retrieve financial data.
+    Base class for data retrievers.
     """
 
-    def __init__(self, credentials_file):
+    def __init__(self):
+        logging.basicConfig(level=logging.ERROR)
+        self.logger = logging.getLogger()
 
+
+    def generate_output_filepath(self, *args, output_directory=None):
         """
-        Parameters
-        ----------
-        credentials_file : str
-            Path to file where credentials can be found.
-            Credentials should be in a .toml format, with the credentials under
-            the key [api].
-            For tests, put the credentials under the key [sandbox-api].
-        """
-
-        self.base_url = "https://cloud.iexapis.com/stable"
-        self.credentials = toml.load(credentials_file)["api"]
-
-    def get_stock_price(self, stock_symbol, output_directory=None):
-
-        """
-        Function to get stock price of a certain stock.
+        Generates the output filepath for data to be written to
 
         Parameters
         ----------
-        stock_symbol : str
-            The stock symbol of the stock to retrieve data for
-        output_directory : str
-            The directory to write the retrieved data in JSON format to
-
+            *args : array
+                Array of strings to use to generate the filename
+            output_directory : str
+                The specified directory to output the file to. If unspecified,
+                the file will be written to the pwd.
         Returns
         -------
-        req
-            The request object used to call the API
+            output_filepath : str
+                The filepath generated
         """
-
-        endpoint = f"stock/{stock_symbol}/batch"
-        options = {
-            "token": self.credentials["iex_cloud_secret"],
-            "types": "quote,chart",
-            "range": "1y",
-        }
-        query_string = "&".join(
-            [f"{parameter}={value}" for parameter, value in options.items()]
-        )
-
-        url = f"{self.base_url}/{endpoint}?{query_string}"
-        req = requests.get(url)
-
-        if req.status_code != 200:
-            return req
-
-        filename = self.generate_output_filepath(stock_symbol)
-        if output_directory is None:
-            output_filepath = pathlib.Path(filename)
-        else:
-            output_filepath = pathlib.Path(output_directory).joinpath(filename)
-
-        with open(output_filepath, "w") as f:
-            json.dump(req.json(), f)
-
-        return req
-
-    def generate_output_filepath(self, *args):
         file_date = dt.datetime.now().strftime("%Y%m%d%H%M%S")
-        args_name = "_".join(args)
-        return f"{args_name}_{file_date}.json"
+        args_name = "_".join([str(a) for a in args])
+        output_filepath = pathlib.Path(f"{args_name}_{file_date}.json")
+        if output_directory is not None:
+            output_filepath = pathlib.Path(output_directory).joinpath(
+                output_filepath
+            )
+        return output_filepath
+
+    def handle_api_request(self, request, *args, output_directory=None):
+        """
+        Handles requests objects to either write the output if successful
+
+        Parameters
+        ----------
+            request : request.models.Response
+                A request made to an API endpoint
+            *args : array
+                Array of strings to use to generate the filename
+            output_directory : str
+                The specified directory to output the file to. If unspecified,
+                the file will be written to the pwd.
+        Returns
+        -------
+            request : request.models.Response
+                A request made to an API endpoint
+        """
+        if request.status_code == 200:
+            output_filepath = self.generate_output_filepath(
+                *args, output_directory=output_directory
+            )
+            with open(output_filepath, "w") as f:
+                json.dump(request.json(), f)
+        else:
+            self.logger.error("Request did not return status code 200.")
+        return request
