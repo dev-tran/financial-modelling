@@ -38,11 +38,8 @@ def main():
     return args
 
 
-if __name__ == "__main__":
-    args = main()
-
+def handle_args(args):
     data_retriever = FinancialModellingPrep()
-
     if args.command == "tickers":
         req = data_retriever.get_tickers(
             exchange=args.exchange,
@@ -66,3 +63,11 @@ if __name__ == "__main__":
             to_date=args.to_date,
             output_directory=args.output,
         )
+    else:
+        req = None
+    return req
+
+
+if __name__ == "__main__":
+    args = main()
+    req = handle_args(args)

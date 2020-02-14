@@ -17,7 +17,7 @@ class FinancialModellingPrep(fdr.FinancialDataRetriever):
         base_args : list
             List of str to use to name the file output
         """
-
+        super(fdr.FinancialDataRetriever, self).__init__()
         self.base_url = "https://financialmodelingprep.com/api/v3/"
         self.base_args = ["FinancialModellingPrep"]
 
