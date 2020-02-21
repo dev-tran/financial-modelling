@@ -3,3 +3,4 @@ financial_modelling/data/
 .vscode
 __pycache__
 tests/logs/*
+.venv

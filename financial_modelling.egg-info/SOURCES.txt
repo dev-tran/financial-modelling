@@ -6,11 +6,15 @@ financial_modelling.egg-info/SOURCES.txt
 financial_modelling.egg-info/dependency_links.txt
 financial_modelling.egg-info/requires.txt
 financial_modelling.egg-info/top_level.txt
-financial_modelling/data/credentials.toml
 financial_modelling/notebooks/0.1-dt-analyse-msft.ipynb
-financial_modelling/src/data/get_financial_data.py
+financial_modelling/notebooks/0.2-dt-use-financial-data-modelling.ipynb
+financial_modelling/src/data/FinancialModellingPrep_Symbols_20200212222842.json
+financial_modelling/src/data/FinancialModellingPrep_Symbols_20200212222857.json
+financial_modelling/src/data/FinancialModellingPrep_Symbols_20200212222907.json
+financial_modelling/src/data/get_data.py
 financial_modelling/src/data/FinancialDataRetriever/FinancialDataRetriever.py
 financial_modelling/src/data/FinancialDataRetriever/FinancialModellingPrep.py
 financial_modelling/src/data/FinancialDataRetriever/IexCloudApi.py
 financial_modelling/src/data/FinancialDataRetriever/YahooFinanceCrawler.py
 financial_modelling/src/data/FinancialDataRetriever/__init__.py
+financial_modelling/src/data/FinancialDataRetriever/__main__.py
